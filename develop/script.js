@@ -8,21 +8,33 @@ var specialChar = ['!','@','#','$','%','^','&','*','(',')','<','>','?','/','|',]
 
 var characterLength = 8;
 var choiceArr = []
-// Write password to the #password input
-function writePassword() {
-  var password = generatePassword();
-  var passwordText = document.querySelector("#password");
 
-  passwordText.value = password;
-
-}
 
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
 
+// Write password to the #password input
+function writePassword() {
+  var correctPrompts =  getPrompts();
+  var passwordText = document.querySelector("#password");
+
+  if (correctPrompts) {
+      var finalPassword = generatePassword();  
+      passwordText.value = finalPassword;
+  } else {
+    passwordText.value = '';
+  }
+}
+
+
 //generates password based on promts
 function generatePassword(){
-
+    var password = "";
+    for (let i = 0; i < characterLength; i++) {
+        var randomLetter = Math.floor(Math.random() * choiceArr.length);
+        password = password + choiceArr[randomLetter];
+    }
+    return password;
 }
 
 //generates multiple prompts to get a password together  
@@ -49,6 +61,8 @@ function getPrompts(){
 
     if (confirm("would you like Numbers in your password?")) {
         choiceArr = choiceArr.concat(numbers);
-    }
+    } else {
+        window.alert("Please choose at least one option");
+      }
     return true;
 }
